@@ -66,6 +66,9 @@ Xonomy.xml2js=function(xml, jsParent) {
 		if(child.nodeType==3) { //text node
 			js["children"].push({type: "text", value: child.nodeValue, htmlID: "", parent: function(){return js}, });
 		}
+		if(child.nodeType==4) { //cdata node
+			js["children"].push({type: "cdata", value: child.nodeValue, htmlID: "", parent: function(){return js}, });
+		}
 	}
 	js=Xonomy.enrichElement(js);
 	return js;
@@ -83,17 +86,22 @@ Xonomy.js2xml=function(js) {
 		}
 		if(js.children.length>0) {
 			var hasText=false;
+			var hasCData=false;
 			for(var i=0; i<js.children.length; i++) {
 				var child=js.children[i];
 				if(child.type=="text") hasText=true;
+                                else if(child.type=="cdata") hasCData=true;
 			}
-			if(hasText) xml+=" xml:space='preserve'";
+			//if(hasText) xml+=" xml:space='preserve'";
 			xml+=">";
+                        if(hasCData) xml+="<![CDATA['";
 			for(var i=0; i<js.children.length; i++) {
 				var child=js.children[i];
 				if(child.type=="text") xml+=Xonomy.xmlEscape(child.value); //text node
+                                else if(child.type=="cdata") xml+=child.value; //cdata node
 				else if(child.type=="element") xml+=Xonomy.js2xml(child); //element node
 			}
+                        if(hasCData) xml+="]]>";
 			xml+="</"+js.name+">";
 		} else {
 			xml+="/>";
@@ -403,7 +411,7 @@ Xonomy.surrogate.prototype.parent=function() {
 
 Xonomy.harvestText = function (htmlText, jsParent) {
 	var js = new Xonomy.surrogate(jsParent);
-	js.type = "text";
+	js.type = htmlText.className.indexOf("cdata") > -1 ? "cdata" : "text";
 	js.htmlID = htmlText.id;
 	js.value = htmlText.getAttribute("data-value");
 	return js;
@@ -515,7 +523,8 @@ Xonomy.renderElement=function(element) {
 					if(hasText && prevChildType=="element" && child.type=="element") {
 						html+=Xonomy.renderText({type: "text", value: ""}); //if inline layout, insert empty text node between two elements
 					}
-					if(child.type=="text") html+=Xonomy.renderText(child); //text node
+					if(child.type=="text") html+=Xonomy.renderText(child, false); //text node
+                                        else if(child.type=="cdata") html+=Xonomy.renderText(child, true); //cdata node
 					else if(child.type=="element") html+=Xonomy.renderElement(child); //element node
 					prevChildType=child.type;
 				}
@@ -575,9 +584,10 @@ Xonomy.renderAttribute=function(attribute, optionalParentName) {
 	attribute.htmlID = htmlID;
 	return html;
 };
-Xonomy.renderText=function(text) {
+Xonomy.renderText=function(text, isCData) {
 	var htmlID=Xonomy.nextID();
 	var classNames="textnode focusable";
+        if(isCData) classNames+=" cdata";
 	if($.trim(text.value)=="") classNames+=" whitespace";
 	if(text.value=="") classNames+=" empty";
 	var html="";
