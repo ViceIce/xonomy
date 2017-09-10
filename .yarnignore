@@ -1,0 +1,6 @@
+.vscode/
+src/
+*.*
+!package.json
+!dist/**
+!assets/**

@@ -1,3 +1,5 @@
+import * as $ from "jquery";
+
 var Xonomy={
 	lang: "", //"en"|"de"|fr"| ...
 	mode: "nerd", //"nerd"|"laic"
@@ -1565,3 +1567,11 @@ Xonomy.goLeft=function(){
 	if($next.hasClass("childrenCollapsed")) Xonomy.setFocus($next.closest(".element").prop("id"), "childrenCollapsed");
 	if($next.hasClass("rollouter")) Xonomy.setFocus($next.closest(".element").prop("id"), "rollouter");
 };
+
+$(() => {
+    if (typeof window !== 'undefined') {
+        window.Xonomy = Xonomy;
+    }
+});
+
+export default Xonomy;

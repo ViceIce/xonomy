@@ -1,0 +1,61 @@
+{
+  "name": "xonomy",
+  "version": "1.0.0",
+  "description": "Package wrapping from original work at http://www.lexiconista.com/xonomy/",
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.2.17",
+    "awesome-typescript-loader": "^3.2.3",
+    "clean-webpack-plugin": "^0.1.17",
+    "codelyzer": "^4.0.2",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.30.1",
+    "image-webpack-loader": "^3.4.2",
+    "style-loader": "^0.18.2",
+    "ts-loader": "^3.2.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2",
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1",
+    "webpack-merge": "^4.1.1"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --open --config tools/webpack/wwebpack.dev.js",
+    "build": "yarn build:umd && yarn build:es6",
+    "build:umd": "webpack --config tools/webpack/webpack.prod.js",
+    "build:es6": "tsc -m es6 --outDir dist/esm",
+    "preinstall": "node tools/yarn/check-yarn.js",
+    "lint": "tslint",
+    "wp": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ViceIce/xonomy.git"
+  },
+  "keywords": [
+    "xml",
+    "visual",
+    "editor",
+    "tree",
+    "inline",
+    "validate",
+    "xsd"
+  ],
+  "author": "Michal Boleslav Měchura",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ViceIce/xonomy/issues"
+  },
+  "homepage": "https://github.com/ViceIce/xonomy/#readme"
+}
