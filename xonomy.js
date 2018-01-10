@@ -449,7 +449,7 @@ Xonomy.render=function(data, editor, docSpec) { //renders the contents of an edi
 	$(editor).hide();
 	editor.innerHTML=Xonomy.renderElement(data, editor);
 	$(editor).show();
-	if(docSpec.allowModeSwitching){
+	if(docSpec && docSpec.allowModeSwitching){
 		$("<div class='modeSwitcher'><span class='nerd'></span><span class='laic'></span></div>").appendTo($(editor)).on("click", function(e){
 			if(Xonomy.mode=="nerd") { Xonomy.setMode("laic"); } else { Xonomy.setMode("nerd"); }
 			if(docSpec.onModeSwitch) docSpec.onModeSwitch(Xonomy.mode);
