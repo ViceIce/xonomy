@@ -546,7 +546,7 @@ Xonomy.renderElement=function(element) {
 };
 Xonomy.renderAttribute=function(attribute, optionalParentName) {
 	var htmlID=Xonomy.nextID();
-	classNames="attribute";
+	var classNames="attribute";
 	var readonly=false;
 
 	var displayName=attribute.name;
