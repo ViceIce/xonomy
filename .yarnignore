@@ -1,6 +1,8 @@
 .vscode/
 src/
 *.*
+.gitattributes
+.yarnignore
 !package.json
 !dist/**
 !assets/**
