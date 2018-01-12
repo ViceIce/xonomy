@@ -1,89 +1,178 @@
 declare namespace Xonomy {
     interface XonomyStatic {
-        mode: 'nerd' | 'laic';
+        readonly mode: 'nerd' | 'laic';
+        lang: 'en' | 'de' | string;
+        readonly warnings: IWarning[];
 
-        render(data: string, editor: Element, docSpec: IXmlSpec): void;
+        render(
+            data: XMLDocument | string,
+            editor: Element | string,
+            docSpec: IXmlSpec
+        ): void;
         harvest(): string;
         setMode(mode: 'nerd' | 'laic'): void;
 
-        newElementChild: IAction;
-        newAttribute: IAction;
-        deleteElement: IAction;
-        newElementBefore: IAction;
-        newElementAfter: IAction;
+        textByLang(val: string): string;
 
-        deleteAttribute: IAction;
+        replace(htmlID: string, jsNode: ISurrogate): void;
+        harvestElement(
+            div: HTMLElement,
+            parent: IElementSurrogate
+        ): IElementSurrogate;
+        harvestAttribute(
+            div: HTMLElement,
+            parent: IElementSurrogate
+        ): IAttributeSurrogate;
+        harvestText(
+            div: HTMLElement,
+            parent: IElementSurrogate
+        ): ITextSurrogate;
 
-        askString: IAsker;
-        askPicklist: IAsker;
+        readonly newElementChild: IAction;
+        readonly deleteElement: IAction;
+
+        readonly newElementBefore: IAction;
+        readonly newElementAfter: IAction;
+
+        readonly newAttribute: IAction;
+        readonly deleteAttribute: IAction;
+
+        readonly editRaw: IAction;
+        readonly wrap: IAction;
+        readonly unwrap: IAction;
+
+        readonly askString: IAsker;
+        readonly askLongString: IAsker;
+        readonly askPicklist: IAsker;
+        readonly askOpenPicklist: IAsker;
+        readonly askRemote: IAsker;
     }
 
-    interface ISurrogateFunc<T, V = ISurrogate> {
-        (obj?: V): T;
+    interface IWarning {
+        htmlID: string;
+        text: string;
     }
 
-    type BoolFunc = boolean | ISurrogateFunc<boolean>;
+    interface IFunc<TArg = any, TResult = any> {
+        (obj?: TArg): TResult;
+    }
+
+    type SurrogateFunc<
+        TResult,
+        TArgument extends ISurrogate = ISurrogate
+    > = Func<TArgument, TResult>;
+
+    type BoolFunc<T extends ISurrogate = ISurrogate> = Func<boolean, T>;
+
+    type Func<TArg, TResult> = TResult | IFunc<TArg, TResult>;
 
     interface IXmlSpec {
         onchange?(): void;
-        validate?(obj): void;
+        validate?(obj: IElementSurrogate): void;
+
         elements?: { [name: string]: IXmlSpecElement };
         allowModeSwitching?: boolean;
+
+        unknownElement?: Func<string, IXmlSpecElement>;
+        unknownAttribute?: Func<string, IXmlSpecAttribute>;
     }
 
-    interface IXmlSpecElement extends IMenu {
-        oneliner?: boolean;
-        displayName?: string | ISurrogateFunc<string, IElementSurrogate>;
+    interface IXmlSpecItem<T extends ISurrogate = ISurrogate> extends IMenu<T> {
+        displayName?: string | SurrogateFunc<string, T>;
+        displayValue?: SurrogateFunc<string, T>;
+
+        title?: string | SurrogateFunc<string, T>;
+        caption?: string | SurrogateFunc<string, T>;
+
+        isReadOnly?: BoolFunc<T>;
+        isInvisible?: BoolFunc<T>;
+
+        asker?: IAsker<IAttributeSurrogate>;
+        askerParameter?: any;
+    }
+
+    interface IXmlSpecElement extends IXmlSpecItem<IElementSurrogate> {
+        oneliner?: BoolFunc<IElementSurrogate>;
+
+        backgroundColour?: string;
+
+        attributes?: { [name: string]: IXmlSpecAttribute };
 
         canDropTo?: string[];
-        attributes?: { [name: string]: IXmlSpecAttribute };
-        collapsed?(): boolean;
+        localDropOnly?: BoolFunc<IElementSurrogate>;
 
-        hasText?: BoolFunc;
+        collapsible?: SurrogateFunc<boolean, IElementSurrogate>;
+        collapsoid?: SurrogateFunc<string, IElementSurrogate>;
+        collapsed?: SurrogateFunc<boolean, IElementSurrogate>;
 
-        isReadOnly?: BoolFunc;
+        hasText?: BoolFunc<IElementSurrogate>;
 
-        mustBeBefore?: string[];
-        mustBeAfter?: string[];
+        inlineMenu?: IMenuItem<ITextSurrogate>[];
+
+        mustBeBefore?: string[] | SurrogateFunc<string[], IElementSurrogate>;
+        mustBeAfter?: string[] | SurrogateFunc<string[], IElementSurrogate>;
+    }
+
+    interface IXmlSpecAttribute extends IMenu<IAttributeSurrogate> {
+        shy?: BoolFunc<IAttributeSurrogate>;
+    }
+
+    interface IMenu<T extends ISurrogate = ISurrogate> {
+        menu?: IMenuItem<T>[];
+    }
+
+    interface IMenuItem<T extends ISurrogate = ISurrogate> extends IMenu<T> {
+        caption: string | SurrogateFunc<string, T>;
+        action?: IAction;
+        actionParameter?: string | string[] | { [key: string]: any };
+        hideIf?: SurrogateFunc<boolean, T>;
+    }
+
+    interface IAction<T = any> {
+        (htmlID: string, actionParameter: T): void;
+    }
+
+    interface IAsker<T extends ISurrogate = ISurrogate> {
+        (defaultString: string, askerParameter: any, jsMe: T): string;
     }
 
     interface ISurrogate {
-        type: 'element' | 'attribute' | 'text';
-        name: string;
-        value: string;
-        hasAttribute(name: string): boolean;
-        hasChildElement(name: string): boolean;
+        readonly type: 'element' | 'attribute' | 'text' | 'cdata';
+        readonly htmlID: string;
+
+        parent(): IElementSurrogate;
     }
 
     interface IElementSurrogate extends ISurrogate {
-        type: 'element';
+        readonly type: 'element';
+        readonly name: string;
+
+        readonly attributes: IAttributeSurrogate[];
+        readonly children: (IElementSurrogate | ITextSurrogate)[];
+
+        hasAttribute(name: string): boolean;
+        getAttribute(name: string): IAttributeSurrogate;
+
+        getAttributeValue(name: string, ifNull: any): any;
+
+        hasElements(): boolean;
+        hasChildElement(name: string): boolean;
+        getChildElements(name: string): IElementSurrogate[];
+        getDescendantElements(name: string): IElementSurrogate[];
+
+        getText(): string;
     }
 
     interface IAttributeSurrogate extends ISurrogate {
-        type: 'attribute';
+        readonly type: 'attribute';
+        readonly name: string;
+        readonly value: string;
     }
 
-    interface IXmlSpecAttribute extends IMenu {
-        asker: IAsker;
-        askerParameter?: any;
-        isReadOnly?: BoolFunc;
-        isInvisible?: BoolFunc;
+    interface ITextSurrogate extends ISurrogate {
+        readonly type: 'text' | 'cdata';
+        readonly value: string;
     }
-
-    interface IMenu {
-        menu?: IMenuItem[];
-    }
-
-    interface IMenuItem extends IMenu {
-        caption: string;
-        action?: IAction;
-        actionParameter?: string | string[] | { [key: string]: any };
-        hideIf?: ISurrogateFunc<boolean>;
-    }
-
-    interface IAction {}
-
-    interface IAsker {}
 }
 
 declare const Xonomy: Xonomy.XonomyStatic;
