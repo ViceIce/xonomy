@@ -36,7 +36,7 @@
     "build": "yarn build:umd && yarn build:es6",
     "build:umd": "webpack --config tools/webpack/webpack.prod.js",
     "build:es6": "tsc -m es6 --outDir dist/esm",
-    "preinstall": "node tools/yarn/check-yarn.js",
+    "#preinstall": "node tools/yarn/check-yarn.js",
     "lint": "tslint",
     "wp": "webpack"
   },
