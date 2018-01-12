@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Converted to typescript.
+## [1.0.1]
+### Fixed
+- Wrong function call `focus` insetad of `setFocus`.
 
 ## 1.0.0
 ### Added
@@ -15,4 +18,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Converted to umd and es6 module.
 - Typescript definitions.
 
-[Unreleased]: https://github.com/ViceIce/xonomy/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/ViceIce/xonomy/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/ViceIce/xonomy/compare/v1.0.0...v1.0.1
