@@ -13,5 +13,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Xonomy 3.4.0
 - Converted to umd and es6 module.
+- Typescript definitions.
 
 [Unreleased]: https://github.com/ViceIce/xonomy/compare/v1.0.0...HEAD

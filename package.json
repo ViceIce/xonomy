@@ -4,6 +4,7 @@
   "description": "Package wrapping from original work at http://www.lexiconista.com/xonomy/",
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
+  "types": "./typings.d.ts",
   "directories": {
     "doc": "doc"
   },

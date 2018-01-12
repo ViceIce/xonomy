@@ -4,3 +4,4 @@ src/
 !package.json
 !dist/**
 !assets/**
+!typings.d.ts
