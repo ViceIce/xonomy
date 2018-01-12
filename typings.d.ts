@@ -62,7 +62,7 @@ declare namespace Xonomy {
         TArgument extends ISurrogate = ISurrogate
     > = Func<TArgument, TResult>;
 
-    type BoolFunc<T extends ISurrogate = ISurrogate> = Func<boolean, T>;
+    type BoolFunc<T extends ISurrogate = ISurrogate> = boolean | IFunc<T, boolean>;
 
     type Func<TArg, TResult> = TResult | IFunc<TArg, TResult>;
 
@@ -113,7 +113,7 @@ declare namespace Xonomy {
         mustBeAfter?: string[] | SurrogateFunc<string[], IElementSurrogate>;
     }
 
-    interface IXmlSpecAttribute extends IMenu<IAttributeSurrogate> {
+    interface IXmlSpecAttribute extends IXmlSpecItem<IAttributeSurrogate> {
         shy?: BoolFunc<IAttributeSurrogate>;
     }
 
