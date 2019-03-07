@@ -23,7 +23,7 @@ module.exports = {
             {
                 test: /\.(jpe?g|png|gif)$/i,
                 use: ['file-loader', 'image-webpack-loader?bypassOnDebug'],
-                include: path.resolve(__dirname, 'assets/img')
+                include: path.resolve(__dirname, '../../assets/img')
             }
         ],
     },
@@ -36,7 +36,7 @@ module.exports = {
     ],
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '../../dist'),
         library: 'Xonomy',
         libraryExport: 'default',
         libraryTarget: 'umd',
