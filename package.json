@@ -1,6 +1,6 @@
 {
   "name": "xonomy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Package wrapping from original work at http://www.lexiconista.com/xonomy/",
   "main": "./dist/index.umd.js",
   "module": "./dist/esm/index.js",
