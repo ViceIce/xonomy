@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Converted to typescript.
 
+## [1.0.4]
+### Fixed
+- Missing variable declaration.
+
 ## [1.0.3]
 ### Fixed
 - Wrong webpack dist folder.
@@ -27,7 +31,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Converted to umd and es6 module.
 - Typescript definitions.
 
-[Unreleased]: https://github.com/ViceIce/xonomy/compare/v1.0.3...HEAD
-[1.0.2]: https://github.com/ViceIce/xonomy/compare/v1.0.2...v1.0.3
+[Unreleased]: https://github.com/ViceIce/xonomy/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/ViceIce/xonomy/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/ViceIce/xonomy/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/ViceIce/xonomy/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/ViceIce/xonomy/compare/v1.0.0...v1.0.1
