@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.1]
 ### Fixed
-- Wrong function call `focus` insetad of `setFocus`.
+- Wrong function call `focus` instead of `setFocus`.
 
 ## 1.0.0
 ### Added
