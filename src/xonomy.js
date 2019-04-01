@@ -471,6 +471,7 @@ Xonomy.render=function(data, editor, docSpec) { //renders the contents of an edi
 };
 Xonomy.renderElement=function(element) {
 	var htmlID=Xonomy.nextID();
+	var readonly=false;
 	Xonomy.verifyDocSpecElement(element.name);
 	var spec=Xonomy.docSpec.elements[element.name];
 	var classNames="element";
